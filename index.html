@@ -110,8 +110,9 @@
                     document.getElementById("detect").innerHTML = "유튜브 URL을 발견했습니다.";
                     let response = JSON.parse(xhr.response).items[0];
                     document.getElementById("detail").innerHTML = response.snippet.title + " by " + response.snippet.channelTitle;
-                    var time = response.contentDetails.duration.match(/PT([0-9]*)M([0-9]*)S/);
-                    var sec = parseInt(time[1]) * 60 + parseInt(time[2]);
+                    var time = response.contentDetails.duration.match(/PT([0-9]*)?H?([0-9]*)M([0-9]*)S/);
+                    if (time[2] != "") var sec = parseInt(time[1]) * 3600 + parseInt(time[2]) * 60 + parseInt(time[3]);
+                    else var sec = parseInt(time[1]) * 60 + parseInt(time[3]);
                     num_start.max = sec;
                     num_end.max = sec;
                     num_end.value = sec;
