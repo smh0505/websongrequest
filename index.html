@@ -40,6 +40,12 @@
         var num_start = document.getElementById("startat");
         var num_end = document.getElementById("endat");
 
+        num_start.oninput = function() {
+            if (num_start.value > num_start.max) num_start.value = num_start.max;
+            else if (num_start.value < num_start.min) num_start.value = num_start.min;
+            else if (num_start.value == "") num_start.value = num_start.min;
+        }
+
         function startCheckbox() {
             if (cb_start.checked == true) num_start.disabled = false;
             else {
