@@ -20,15 +20,19 @@
     <table>
         <tr>
             <th>유튜브 URL</th>
-            <td><input type="text" id="url"> <button onclick="urlcheck()">확인</button></td>
+            <td><input type="text" id="url" onblur="urlcheck()"></td>
         </tr>
         <tr>
             <th>시작 시간</th>
-            <td><input type="checkbox" id="start" disabled onclick="startCheckbox()"> <input type="range" id="startat" disabled value="0" min="0"></td>
+            <td><input type="checkbox" id="start" disabled onclick="startCheckbox()">
+                <input type="number" id="startat" disabled value="0" min="0">
+            </td>
         </tr>
         <tr>
             <th>종료 시간</th>
-            <td><input type="checkbox" id="end" disabled onclick="endCheckbox()"> <input type="range" id="endat" disabled value="0" min="0"></td>
+            <td><input type="checkbox" id="end" disabled onclick="endCheckbox()">
+                <input type="number" id="endat" disabled value="0" min="0">
+            </td>
         </tr>
     </table>
     <p1 id="detail">유튜브 URL이 발견되면 여기에 영상 제목과 채널 이름이 표시됩니다.</p1>
@@ -39,22 +43,6 @@
         var cb_end = document.getElementById("end");
         var num_start = document.getElementById("startat");
         var num_end = document.getElementById("endat");
-
-        function startCheckbox() {
-            if (cb_start.checked == true) num_start.disabled = false;
-            else {
-                num_start.disabled = true;
-                num_start.value = num_start.min;
-            }
-        }
-
-        function endCheckbox() {
-            if (cb_end.checked == true) num_end.disabled = false;
-            else {
-                num_end.disabled = true;
-                num_end.value = num_end.max;
-            }
-        }
 
         function urlcheck() {
             var url = document.getElementById("url").value;
@@ -110,13 +98,63 @@
                     document.getElementById("detect").innerHTML = "유튜브 URL을 발견했습니다.";
                     let response = JSON.parse(xhr.response).items[0];
                     document.getElementById("detail").innerHTML = response.snippet.title + " by " + response.snippet.channelTitle;
-                    var time = response.contentDetails.duration.match(/PT([0-9]*)?H?([0-9]*)M([0-9]*)S/);
-                    if (time[2] != "") var sec = parseInt(time[1]) * 3600 + parseInt(time[2]) * 60 + parseInt(time[3]);
-                    else var sec = parseInt(time[1]) * 60 + parseInt(time[3]);
+                    var sec = parseTime(response.contentDetails.duration);
                     num_start.max = sec;
                     num_end.max = sec;
                     num_end.value = sec;
                 }
+            }
+        }
+
+        function parseTime(duration) {
+            var hrs = 0;
+            var mins = 0;
+            var secs = 0;
+
+            duration = duration.replace('PT', '');
+            if (duration.indexOf('H') > -1) {
+                splitter = duration.split('H');
+                hrs = parseInt(splitter[0]);
+                duration = splitter[1];
+            }
+            if (duration.indexOf('M') > -1) {
+                splitter = duration.split('M');
+                mins = parseInt(splitter[0]);
+                duration = splitter[1];
+            }
+            if (duration.indexOf('S') > -1) {
+                splitter = duration.split('S');
+                secs = parseInt(splitter[0]);
+            }
+
+            return (hrs * 3600 + mins * 60 + secs);
+        }
+
+        num_start.onblur = function() {
+            num_start.value = parseInt(Number(num_start.value));
+            if (parseInt(num_start.value) < parseInt(num_start.min)) num_start.value = num_start.min;
+            else if (parseInt(num_start.value) > parseInt(num_start.max)) num_start.value = num_start.max;
+        }
+
+        num_end.onblur = function() {
+            num_end.value = parseInt(Number(num_end.value));
+            if (parseInt(num_end.value) < parseInt(num_end.min)) num_end.value = num_end.min;
+            else if (parseInt(num_end.value) > parseInt(num_end.max)) num_end.value = num_end.min;
+        }
+
+        function startCheckbox() {
+            if (cb_start.checked == true) num_start.disabled = false;
+            else {
+                num_start.disabled = true;
+                num_start.value = num_start.min;
+            }
+        }
+
+        function endCheckbox() {
+            if (cb_end.checked == true) num_end.disabled = false;
+            else {
+                num_end.disabled = true;
+                num_end.value = num_end.max;
             }
         }
 
