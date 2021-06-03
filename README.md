@@ -18,19 +18,19 @@
 이 프로그램은 [YouTube Data API v3](https://developers.google.com/youtube/v3/getting-started?hl=ko)를 사용합니다. 유튜브 URL이 아닌 다른 주소를 입력하면 제대로 작동이 되지 않습니다.
 
 ## 예시
-
-
-결과: `!sr https://youtu.be/mpCMdq2fv0k&end=150`
-
-
+![image](https://user-images.githubusercontent.com/42821865/120577311-24183400-c3f2-11eb-99aa-e27963ce9344.png)
 
 결과: `!sr https://youtu.be/mpCMdq2fv0k&end=150`
+
+![image](https://user-images.githubusercontent.com/42821865/120577344-31352300-c3f2-11eb-8b73-c97be516673a.png)
+
+결과: `!sr https://youtu.be/mpCMdq2fv0k&start=60&end=150`
 
 ## Special Thanks
 [김편집](https://www.twitch.tv/arpa__)
 
 [레밀레기](https://www.twitch.tv/remilegi)
 
-[PyTube](https://github.com/pytube/pytube)
+[Google Developers](https://developers.google.com/?hl=ko)
 
 그리고 여러분
