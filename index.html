@@ -139,7 +139,7 @@
         num_end.onblur = function() {
             num_end.value = parseInt(Number(num_end.value));
             if (parseInt(num_end.value) < parseInt(num_end.min)) num_end.value = num_end.min;
-            else if (parseInt(num_end.value) > parseInt(num_end.max)) num_end.value = num_end.min;
+            else if (parseInt(num_end.value) > parseInt(num_end.max)) num_end.value = num_end.max;
         }
 
         function startCheckbox() {
